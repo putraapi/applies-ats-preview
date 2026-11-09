@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Vacancies · Talent ATS prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.app{--bg:#F8FAFC;--surface:#FFFFFF;--surface-2:#F1F5F9;--border:#E2E8F0;--border-2:#CBD5E1;--text:#0F172A;--text-2:#334155;--muted:#475569;--primary:#0369A1;--primary-h:#075985;--on-primary:#FFFFFF;--soft:#E0F2FE;--soft-fg:#075985;--warn-bg:#FEF3C7;--warn-fg:#92400E;--bad-bg:#FEE2E2;--bad-fg:#991B1B;--ok-bg:#DCFCE7;--ok-fg:#166534;--ai-bg:#F3E8FF;--ai-fg:#6B21A8;--focus:#38BDF8;color-scheme:light}
+.app.dark{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;color-scheme:dark}
+@media (prefers-color-scheme:dark){.app.system{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;color-scheme:dark}}
+a{color:var(--primary)}a:hover{color:var(--primary-h)}
+.nav a{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:8px;color:var(--text-2);text-decoration:none;font-weight:500;font-size:15px;transition:background .15s ease}
+.nav a:hover{background:var(--surface-2);color:var(--text)}
+.nav a.on{background:var(--soft);color:var(--soft-fg);font-weight:600}
+.b{cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s ease,border-color .15s ease}
+.bp{background:var(--primary);color:var(--on-primary);border:0}.bp:hover{background:var(--primary-h);color:var(--on-primary)}
+.bs{background:var(--surface);color:var(--text);border:1px solid var(--border-2)}.bs:hover{background:var(--surface-2);color:var(--text)}
+.row:hover{background:var(--surface-2)}
+input,select,textarea{font-family:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+@media (max-width:820px){.nav{flex-direction:row!important;flex-wrap:wrap}.sfoot{display:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<template id="dc">
+
+<div class="app {{themeClass}}" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-wrap: wrap">
+
+  <aside style="flex: 1 1 240px; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <div aria-hidden="true" style="width: 34px; height: 34px; border-radius: 9px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">ATS</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-weight: 700; font-size: 16px">Talent ATS</span>
+        <span style="font-size: 12px; color: var(--muted)">Recruiter pilot · v1.2</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Main" style="display: flex; flex-direction: column; gap: 4px">
+      <a class="on" href="index.html" aria-current="page"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Vacancies</a>
+      <a href="candidate.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21a6 6 0 0 0-4-5.6"></path></svg>Candidates</a>
+      <a href="reports.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18M9 10v10"></path></svg>Reports</a>
+      <a href="jd-bank.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"></path><path d="M9 11h6M9 15h6"></path></svg>JD Bank</a>
+      <a href="backup.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"></path></svg>Backup &amp; security</a>
+    </nav>
+    <button class="b bs" onClick="{{toggleTheme}}" style="min-height: 44px; padding: 0 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600">
+      <sc-if value="{{isDark}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+      <sc-if value="{{isLight}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+      {{themeLabel}}
+    </button>
+    <div class="sfoot" style="margin-top: auto; padding: 12px; border-radius: 10px; background: var(--surface-2); font-size: 13px; color: var(--text-2); display: flex; flex-direction: column; gap: 8px; line-height: 1.4">
+      <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E"></span>Local model online</span>
+      <span>Data stays on this Mac (localhost)</span>
+      <span>Last encrypted backup: today, 02:00</span>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px clamp(16px, 3vw, 40px) 48px; display: flex; flex-direction: column; gap: 24px">
+
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+      <label style="flex: 1 1 280px; max-width: 520px; display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px; background: var(--surface); border: 1px solid var(--border-2); border-radius: 10px; color: var(--muted)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+        <span class="sr">Search vacancies and candidates</span>
+        <input type="search" placeholder="Search vacancies, candidates, Job Profile Code…" style="flex: 1; min-width: 0; border: 0; font-size: 15px; color: var(--text); background: transparent">
+      </label>
+      <div style="margin-left: auto; display: flex; flex-wrap: wrap; gap: 8px">
+        <button class="b bs" style="height: 44px; padding: 0 16px; border-radius: 10px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg>
+          Import vacancy
+        </button>
+        <a class="b bp" href="new-vacancy.html" style="height: 44px; padding: 0 18px; border-radius: 10px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+          New vacancy from requisition
+        </a>
+      </div>
+    </header>
+
+    <section style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em">Vacancies</h1>
+      <p style="margin: 0; color: var(--muted); font-size: 15px">Every vacancy you own, from Open to Closed. Stage moves are logged automatically for Time to Hire and Time to Fill.</p>
+    </section>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+      <section aria-labelledby="att" style="flex: 3 1 460px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden">
+        <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline">
+          <h2 id="att" style="margin: 0; font-size: 16px; font-weight: 700">Needs your attention</h2>
+          <span style="font-size: 13px; color: var(--muted)">Keeps stage data within 2 working days</span>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 0">
+          <sc-for list="{{attention}}" as="at" hint-placeholder-count="4">
+            <li class="row" style="display: flex; align-items: center; gap: 14px; padding: 12px 20px; border-bottom: 1px solid var(--border)">
+              <span style="flex: none; font-size: 12px; font-weight: 700; padding: 4px 8px; border-radius: 6px; background: {{at.bg}}; color: {{at.fg}}; min-width: 64px; text-align: center">{{at.kind}}</span>
+              <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 15px; font-weight: 600">{{at.title}}</span>
+                <span style="font-size: 13px; color: var(--muted)">{{at.detail}}</span>
+              </div>
+              <a class="b bs" href="{{at.href}}" style="flex: none; height: 38px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 600; display: inline-flex; align-items: center">{{at.cta}}</a>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+
+      <section aria-labelledby="q" style="flex: 2 1 320px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden">
+        <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: baseline; gap: 8px">
+          <h2 id="q" style="margin: 0; font-size: 16px; font-weight: 700">CV processing queue</h2>
+          <span style="font-size: 13px; color: var(--muted)">3 of 5 remaining</span>
+        </div>
+        <ul style="list-style: none; margin: 0; padding: 8px 20px 4px">
+          <sc-for list="{{queue}}" as="qq" hint-placeholder-count="4">
+            <li style="display: flex; flex-direction: column; gap: 6px; padding: 10px 0; border-bottom: 1px solid var(--border)">
+              <div style="display: flex; justify-content: space-between; gap: 8px; font-size: 14px">
+                <span class="mono" style="font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{qq.file}}</span>
+                <span style="flex: none; color: {{qq.fg}}; font-weight: 600; font-size: 13px">{{qq.status}}</span>
+              </div>
+              <div aria-hidden="true" style="height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden"><div style="height: 100%; width: {{qq.pct}}; background: var(--primary)"></div></div>
+              <span style="font-size: 12px; color: var(--muted)">{{qq.vacancy}}</span>
+            </li>
+          </sc-for>
+        </ul>
+        <p style="margin: 0; padding: 10px 20px 16px; font-size: 13px; color: var(--muted)">Keep working — results appear on each candidate when ready. If the model is offline, jobs wait here and nothing else stops.</p>
+      </section>
+    </div>
+
+    <section aria-labelledby="vl" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden">
+      <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 12px; align-items: center">
+        <h2 id="vl" style="margin: 0 12px 0 0; font-size: 16px; font-weight: 700">All vacancies</h2>
+        <div role="group" aria-label="Entity" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 10px">
+          <sc-for list="{{entityTabs}}" as="et" hint-placeholder-count="3">
+            <button class="b" aria-pressed="{{et.pressed}}" onClick="{{et.pick}}" style="height: 36px; padding: 0 12px; border-radius: 7px; border: 0; font-size: 13px; font-weight: 600; background: {{et.bg}}; color: {{et.fg}}">{{et.label}}</button>
+          </sc-for>
+        </div>
+        <div role="group" aria-label="Status" style="display: flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 10px">
+          <sc-for list="{{statusTabs}}" as="st" hint-placeholder-count="5">
+            <button class="b" aria-pressed="{{st.pressed}}" onClick="{{st.pick}}" style="height: 36px; padding: 0 12px; border-radius: 7px; border: 0; font-size: 13px; font-weight: 600; background: {{st.bg}}; color: {{st.fg}}">{{st.label}} <span style="opacity: 0.75">{{st.count}}</span></button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="overflow-x: auto">
+        <x-table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 14px">
+          <x-thead>
+            <x-tr style="text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em">
+              <x-th style="padding: 12px 20px; font-weight: 600">Vacancy</x-th>
+              <x-th style="padding: 12px; font-weight: 600">Entity</x-th>
+              <x-th style="padding: 12px; font-weight: 600">Department</x-th>
+              <x-th style="padding: 12px; font-weight: 600">Status</x-th>
+              <x-th style="padding: 12px; font-weight: 600">Seats filled</x-th>
+              <x-th style="padding: 12px; font-weight: 600; text-align: right">Active</x-th>
+              <x-th style="padding: 12px; font-weight: 600">Sourcing priority</x-th>
+              <x-th style="padding: 12px 20px; font-weight: 600; text-align: right">Open for</x-th>
+            </x-tr>
+          </x-thead>
+          <x-tbody>
+            <sc-for list="{{rows}}" as="r" hint-placeholder-count="6">
+              <x-tr class="row" style="border-top: 1px solid var(--border)">
+                <x-td style="padding: 14px 20px">
+                  <a href="pipeline.html" style="font-weight: 600; color: var(--text); text-decoration: none; font-size: 15px">{{r.title}}</a>
+                  <div class="mono" style="font-size: 12px; color: var(--muted); margin-top: 2px">{{r.code}}</div>
+                </x-td>
+                <x-td style="padding: 14px 12px"><span style="font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: var(--surface-2); color: var(--text-2)">{{r.entity}}</span></x-td>
+                <x-td style="padding: 14px 12px; color: var(--text-2)">{{r.dept}}</x-td>
+                <x-td style="padding: 14px 12px"><span style="font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 999px; background: {{r.sBg}}; color: {{r.sFg}}">{{r.status}}</span></x-td>
+                <x-td style="padding: 14px 12px">
+                  <div style="display: flex; align-items: center; gap: 8px">
+                    <span aria-hidden="true" style="display: inline-flex; gap: 3px">
+                      <sc-for list="{{r.seatDots}}" as="d" hint-placeholder-count="2">
+                        <span style="width: 10px; height: 10px; border-radius: 3px; background: {{d.bg}}; border: 1.5px solid {{d.line}}; box-sizing: border-box"></span>
+                      </sc-for>
+                    </span>
+                    <span style="font-weight: 600">{{r.filled}} of {{r.seats}}</span>
+                    <sc-if value="{{r.full}}" hint-placeholder-val="{{false}}"><button class="b bs" style="height: 30px; padding: 0 10px; border-radius: 6px; font-size: 12px; font-weight: 600">Close vacancy?</button></sc-if>
+                  </div>
+                </x-td>
+                <x-td style="padding: 14px 12px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums">{{r.active}}</x-td>
+                <x-td style="padding: 14px 12px; color: var(--text-2)">{{r.priority}}</x-td>
+                <x-td style="padding: 14px 20px; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums">{{r.days}}</x-td>
+              </x-tr>
+            </sc-for>
+          </x-tbody>
+        </x-table>
+        <sc-if value="{{noRows}}" hint-placeholder-val="{{false}}">
+          <p style="margin: 0; padding: 32px 20px; text-align: center; color: var(--muted); font-size: 14px">No vacancies match these filters.</p>
+        </sc-if>
+      </div>
+    </section>
+  </main>
+</div>
+</template>
+<script type="text/x-dc" id="dc-logic" data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system","section":"Appearance"},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null, entity: 'all', status: 'Open' };
+  }
+  themeVals() {
+    var self = this;
+    var theme = this.state.theme || this.props.theme || 'system';
+    var sysDark = false;
+    try { sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) {}
+    var isDark = theme === 'dark' || (theme === 'system' && sysDark);
+    return {
+      themeClass: theme, isDark: isDark, isLight: !isDark,
+      themeLabel: isDark ? 'Light mode' : 'Dark mode',
+      toggleTheme: function () { self.setState({ theme: isDark ? 'light' : 'dark' }); }
+    };
+  }
+  renderVals() {
+    var self = this;
+    var all = [
+      { title: 'Penetration Tester', code: 'JP-EA-SEC-004', entity: 'EA', dept: 'Offensive Security', status: 'Open', seats: 2, filled: 0, active: 14, priority: 'LinkedIn, referral', days: '18 days' },
+      { title: 'SOC Analyst L1', code: 'JP-EA-SOC-011', entity: 'EA', dept: 'Security Operations', status: 'Open', seats: 3, filled: 1, active: 22, priority: 'Job portal', days: '41 days' },
+      { title: 'Cybersecurity Trainer', code: 'JP-EB-ACD-002', entity: 'EB', dept: 'Academy', status: 'Open', seats: 1, filled: 0, active: 6, priority: 'Referral', days: '9 days' },
+      { title: 'Data Analyst', code: 'JP-EA-BI-007', entity: 'EA', dept: 'Business Intelligence', status: 'Open', seats: 1, filled: 1, active: 2, priority: 'LinkedIn', days: '33 days' },
+      { title: 'HR Generalist', code: 'JP-EA-HG-003', entity: 'EA', dept: 'Human Capital', status: 'Open', seats: 1, filled: 0, active: 9, priority: 'Job portal', days: '6 days' },
+      { title: 'Curriculum Developer', code: 'JP-EB-ACD-005', entity: 'EB', dept: 'Academy', status: 'Postponed', seats: 1, filled: 0, active: 4, priority: 'Referral', days: '52 days' },
+      { title: 'Sales Executive', code: 'JP-EB-SLS-001', entity: 'EB', dept: 'Sales', status: 'Closed', seats: 2, filled: 2, active: 0, priority: 'LinkedIn', days: '64 days' },
+      { title: 'Cloud Security Engineer', code: 'JP-EA-SEC-009', entity: 'EA', dept: 'Offensive Security', status: 'Cancelled', seats: 1, filled: 0, active: 0, priority: '—', days: '—' }
+    ];
+    var statusStyle = {
+      Open: ['var(--soft)', 'var(--soft-fg)'],
+      Postponed: ['var(--warn-bg)', 'var(--warn-fg)'],
+      Closed: ['var(--surface-2)', 'var(--text-2)'],
+      Cancelled: ['var(--bad-bg)', 'var(--bad-fg)']
+    };
+    var ent = this.state.entity, st = this.state.status;
+    var byEnt = all.filter(function (v) { return ent === 'all' || v.entity === ent; });
+    var rows = byEnt.filter(function (v) { return st === 'All' || v.status === st; }).map(function (v) {
+      var dots = [];
+      for (var i = 0; i < v.seats; i++) dots.push({ bg: i < v.filled ? 'var(--primary)' : 'transparent', line: i < v.filled ? 'var(--primary)' : 'var(--border-2)' });
+      return Object.assign({}, v, {
+        sBg: statusStyle[v.status][0], sFg: statusStyle[v.status][1],
+        seatDots: dots, full: v.status === 'Open' && v.filled >= v.seats
+      });
+    });
+    var seg = function (on) { return on ? { bg: 'var(--surface)', fg: 'var(--text)', pressed: 'true' } : { bg: 'transparent', fg: 'var(--muted)', pressed: 'false' }; };
+    var entityTabs = [['all', 'All entities'], ['EA', 'Entity A (EA)'], ['EB', 'Entity B (EB)']].map(function (e) {
+      return Object.assign({ label: e[1], pick: function () { self.setState({ entity: e[0] }); } }, seg(ent === e[0]));
+    });
+    var statusTabs = ['Open', 'Postponed', 'Closed', 'Cancelled', 'All'].map(function (s) {
+      var count = byEnt.filter(function (v) { return s === 'All' || v.status === s; }).length;
+      return Object.assign({ label: s, count: count, pick: function () { self.setState({ status: s }); } }, seg(st === s));
+    });
+    return Object.assign(this.themeVals(), {
+      rows: rows,
+      noRows: rows.length === 0,
+      entityTabs: entityTabs,
+      statusTabs: statusTabs,
+      attention: [
+        { kind: 'Stale', bg: 'var(--warn-bg)', fg: 'var(--warn-fg)', title: '3 candidates have not moved in 2+ working days', detail: 'Penetration Tester (2), SOC Analyst L1 (1) — update the stage if something happened', cta: 'Review', href: 'pipeline.html' },
+        { kind: 'Unmatched', bg: 'var(--ai-bg)', fg: 'var(--ai-fg)', title: '2 scorecard responses could not be matched', detail: 'From the last CSV import — assign each to an application', cta: 'Assign', href: 'candidate.html' },
+        { kind: 'Seats', bg: 'var(--soft)', fg: 'var(--soft-fg)', title: 'Data Analyst has filled 1 of 1 seats', detail: 'All seats reached Agreement. Close the vacancy when you are ready.', cta: 'Close', href: 'pipeline.html' },
+        { kind: 'Manual', bg: 'var(--bad-bg)', fg: 'var(--bad-fg)', title: '1 CV could not be read, even with OCR', detail: 'scan_rizky_cv.pdf — enter the fields by hand with the CV beside them', cta: 'Open', href: 'candidate.html' }
+      ],
+      queue: [
+        { file: 'arif_hidayat_cv.pdf', vacancy: 'Penetration Tester', status: 'Writing AI summary', pct: '80%', fg: 'var(--primary)' },
+        { file: 'sari_putri_resume.docx', vacancy: 'Penetration Tester', status: 'Structuring fields', pct: '45%', fg: 'var(--primary)' },
+        { file: 'yoga_pratama_cv.pdf', vacancy: 'SOC Analyst L1', status: 'Queued', pct: '0%', fg: 'var(--muted)' },
+        { file: 'dewi_lestari_cv.pdf', vacancy: 'Cybersecurity Trainer', status: 'Ready to confirm', pct: '100%', fg: 'var(--ok-fg)' }
+      ]
+    });
+  }
+}
+</script>
+<div id="dc-root"></div>
+<div role="note" style="position:fixed;right:12px;bottom:12px;z-index:50;padding:6px 12px;border-radius:999px;background:#0F172A;color:#F8FAFC;font:600 12px/1.4 system-ui,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25)">Design prototype · sample data</div>
+<script src="dc-lite.js"></script>
+</body>
+</html>

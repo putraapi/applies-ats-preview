@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Offer brief — Kevin Halim · Talent ATS prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.app{--bg:#F8FAFC;--surface:#FFFFFF;--surface-2:#F1F5F9;--border:#E2E8F0;--border-2:#CBD5E1;--text:#0F172A;--text-2:#334155;--muted:#475569;--primary:#0369A1;--primary-h:#075985;--on-primary:#FFFFFF;--soft:#E0F2FE;--soft-fg:#075985;--warn-bg:#FEF3C7;--warn-fg:#92400E;--bad-bg:#FEE2E2;--bad-fg:#991B1B;--ok-bg:#DCFCE7;--ok-fg:#166534;--ai-bg:#F3E8FF;--ai-fg:#6B21A8;--focus:#38BDF8;--paper:#FFFFFF;--paper-text:#0F172A;--paper-muted:#475569;--paper-line:#E2E8F0;color-scheme:light}
+.app.dark{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;--paper:#1A2540;--paper-text:#E5EAF2;--paper-muted:#9AA8BF;--paper-line:#2E3B5A;color-scheme:dark}
+@media (prefers-color-scheme:dark){.app.system{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;--paper:#1A2540;--paper-text:#E5EAF2;--paper-muted:#9AA8BF;--paper-line:#2E3B5A;color-scheme:dark}}
+a{color:var(--primary)}a:hover{color:var(--primary-h)}
+.nav a{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:8px;color:var(--text-2);text-decoration:none;font-weight:500;font-size:15px;transition:background .15s ease}
+.nav a:hover{background:var(--surface-2);color:var(--text)}
+.nav a.on{background:var(--soft);color:var(--soft-fg);font-weight:600}
+.b{cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s ease,border-color .15s ease}
+.bp{background:var(--primary);color:var(--on-primary);border:0}.bp:hover{background:var(--primary-h);color:var(--on-primary)}
+.bs{background:var(--surface);color:var(--text);border:1px solid var(--border-2)}.bs:hover{background:var(--surface-2);color:var(--text)}
+input,select,textarea{font-family:inherit}
+.fld{height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--border-2);background:var(--surface);color:var(--text);font-size:14px;width:100%;box-sizing:border-box}
+textarea.fld{height:auto;padding:10px 12px;line-height:1.5;resize:vertical}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+@media (max-width:820px){.nav{flex-direction:row!important;flex-wrap:wrap}.sfoot{display:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<template id="dc">
+
+<div class="app {{themeClass}}" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-wrap: wrap">
+
+  <aside style="flex: 1 1 240px; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <div aria-hidden="true" style="width: 34px; height: 34px; border-radius: 9px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">ATS</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-weight: 700; font-size: 16px">Talent ATS</span>
+        <span style="font-size: 12px; color: var(--muted)">Recruiter pilot · v1.2</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Main" style="display: flex; flex-direction: column; gap: 4px">
+      <a class="on" href="index.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Vacancies</a>
+      <a href="candidate.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21a6 6 0 0 0-4-5.6"></path></svg>Candidates</a>
+      <a href="reports.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18M9 10v10"></path></svg>Reports</a>
+      <a href="jd-bank.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"></path><path d="M9 11h6M9 15h6"></path></svg>JD Bank</a>
+      <a href="backup.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"></path></svg>Backup &amp; security</a>
+    </nav>
+    <button class="b bs" onClick="{{toggleTheme}}" style="min-height: 44px; padding: 0 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600">
+      <sc-if value="{{isDark}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+      <sc-if value="{{isLight}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+      {{themeLabel}}
+    </button>
+    <div class="sfoot" style="margin-top: auto; padding: 12px; border-radius: 10px; background: var(--surface-2); font-size: 13px; color: var(--text-2); display: flex; flex-direction: column; gap: 8px; line-height: 1.4">
+      <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E"></span>Local model online</span>
+      <span>Data stays on this Mac (localhost)</span>
+      <span>Last encrypted backup: today, 02:00</span>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px clamp(16px, 3vw, 40px) 40px; display: flex; flex-direction: column; gap: 18px">
+
+    <nav aria-label="Breadcrumb" style="font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px">
+      <a href="index.html" style="text-decoration: none; font-weight: 500">Vacancies</a><span aria-hidden="true">/</span>
+      <a href="pipeline.html" style="text-decoration: none; font-weight: 500">Penetration Tester</a><span aria-hidden="true">/</span><span>Offer brief</span>
+    </nav>
+
+    <header style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: flex-end">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em">Offer brief — Kevin Halim</h1>
+        <p style="margin: 0; font-size: 15px; color: var(--muted)">Penetration Tester · Entity A (EA) · currently in Salary Approval</p>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <button class="b bs" onClick="{{copy}}" style="height: 44px; padding: 0 16px; border-radius: 10px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px">
+          <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="13" height="13" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg>
+          Copy to clipboard
+        </button>
+        <button class="b bp" onClick="{{exportPdf}}" style="height: 44px; padding: 0 18px; border-radius: 10px; font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px">
+          <svg aria-hidden="true" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg>
+          Export PDF
+        </button>
+      </div>
+    </header>
+
+    <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+      <div role="status" style="display: flex; gap: 12px; align-items: center; padding: 12px 16px; border-radius: 10px; background: var(--ok-bg); color: var(--ok-fg); font-size: 14px">
+        <span style="flex: 1">{{toast}}</span>
+        <button class="b bs" onClick="{{dismiss}}" aria-label="Dismiss message" style="height: 34px; width: 34px; border-radius: 8px; font-size: 16px">×</button>
+      </div>
+    </sc-if>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+      <div style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+
+        <section aria-labelledby="c1" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+            <h2 id="c1" style="margin: 0; font-size: 16px; font-weight: 700">Compensation</h2>
+            <span style="font-size: 12px; color: var(--muted); display: inline-flex; align-items: center; gap: 6px">
+              <svg aria-hidden="true" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+              Recruiters only
+            </span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px 16px">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="base" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Monthly base salary (IDR)</label>
+              <input id="base" class="fld" inputmode="numeric" value="{{base}}" onInput="{{setBase}}" placeholder="e.g. 25000000">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="allow" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Monthly allowances (IDR)</label>
+              <input id="allow" class="fld" inputmode="numeric" value="{{allow}}" onInput="{{setAllow}}" placeholder="e.g. 2000000">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="start" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Proposed start date</label>
+              <input id="start" class="fld" value="{{start}}" onInput="{{setStart}}">
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="prob" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Probation</label>
+              <x-select id="prob" class="fld" value="{{probation}}" onChange="{{setProbation}}">
+                <x-option value="3 months">3 months</x-option>
+                <x-option value="6 months">6 months</x-option>
+                <x-option value="None">None</x-option>
+              </x-select>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="notes" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Notes for the approver</label>
+            <textarea id="notes" class="fld" rows="3" value="{{notes}}" onInput="{{setNotes}}" placeholder="Negotiation context, counter-offer risk, anything the approver should know"></textarea>
+          </div>
+        </section>
+
+        <section aria-labelledby="c2" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+            <h2 id="c2" style="margin: 0; font-size: 16px; font-weight: 700">Scorecard totals</h2>
+            <span style="font-size: 12px; color: var(--muted)">Calculated by code from imported scorecards</span>
+          </div>
+          <div style="overflow-x: auto">
+            <x-table style="width: 100%; border-collapse: collapse; font-size: 14px">
+              <x-thead><x-tr style="text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em">
+                <x-th style="padding: 8px 0; font-weight: 600">Stage</x-th><x-th style="padding: 8px; font-weight: 600; text-align: right">Interviewers</x-th><x-th style="padding: 8px; font-weight: 600; text-align: right">Total</x-th><x-th style="padding: 8px 0; font-weight: 600; text-align: right">Average</x-th>
+              </x-tr></x-thead>
+              <x-tbody>
+                <sc-for list="{{scores}}" as="s" hint-placeholder-count="3">
+                  <x-tr style="border-top: 1px solid var(--border)">
+                    <x-td style="padding: 10px 0; font-weight: 600">{{s.stage}}</x-td>
+                    <x-td style="padding: 10px 8px; text-align: right; font-variant-numeric: tabular-nums">{{s.n}}</x-td>
+                    <x-td style="padding: 10px 8px; text-align: right; font-variant-numeric: tabular-nums">{{s.total}}</x-td>
+                    <x-td style="padding: 10px 0; text-align: right; font-weight: 700; font-variant-numeric: tabular-nums">{{s.avg}}</x-td>
+                  </x-tr>
+                </sc-for>
+              </x-tbody>
+            </x-table>
+          </div>
+        </section>
+
+        <section aria-labelledby="c3" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 10px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+            <h2 id="c3" style="margin: 0; font-size: 16px; font-weight: 700">From the requisition</h2>
+            <span style="font-size: 12px; color: var(--muted)">Read-only · signed PDF attached to the vacancy</span>
+          </div>
+          <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px 16px; font-size: 14px">
+            <div><dt style="color: var(--muted); font-size: 13px">Level</dt><dd style="margin: 2px 0 0; font-weight: 600">Senior Staff</dd></div>
+            <div><dt style="color: var(--muted); font-size: 13px">Employment type</dt><dd style="margin: 2px 0 0; font-weight: 600">Permanent</dd></div>
+            <div><dt style="color: var(--muted); font-size: 13px">Budget range</dt><dd style="margin: 2px 0 0; font-weight: 600">[RANGE]</dd></div>
+          </dl>
+          <div style="font-size: 14px; line-height: 1.55; color: var(--text-2); padding: 10px 12px; border-radius: 8px; background: var(--surface-2)"><strong style="color: var(--text)">Justification:</strong> {{justification}}</div>
+        </section>
+      </div>
+
+      <section aria-label="Brief preview" style="flex: 1 1 440px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+        <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+          <h2 style="margin: 0; font-size: 16px; font-weight: 700">Preview</h2>
+          <span style="font-size: 12px; color: var(--muted)">Template: EA offer brief · updates as you type</span>
+        </div>
+        <article style="background: var(--paper); color: var(--paper-text); border: 1px solid var(--border-2); border-radius: 6px; padding: 36px 40px; display: flex; flex-direction: column; gap: 18px; font-size: 14px; line-height: 1.6; box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08)">
+          <div style="display: flex; justify-content: space-between; gap: 12px; align-items: flex-start; border-bottom: 2px solid var(--paper-text); padding-bottom: 14px">
+            <div>
+              <div style="font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--paper-muted)">Entity A (EA)</div>
+              <div style="font-size: 20px; font-weight: 700">Offer Brief</div>
+            </div>
+            <div style="text-align: right; font-size: 12px; color: var(--paper-muted)">Confidential<br>9 Nov 2026</div>
+          </div>
+          <dl style="margin: 0; display: grid; grid-template-columns: 170px 1fr; gap: 6px 12px">
+            <dt style="color: var(--paper-muted)">Candidate</dt><dd style="margin: 0; font-weight: 600">Kevin Halim</dd>
+            <dt style="color: var(--paper-muted)">Position</dt><dd style="margin: 0">Penetration Tester · Senior Staff</dd>
+            <dt style="color: var(--paper-muted)">Department</dt><dd style="margin: 0">Offensive Security</dd>
+            <dt style="color: var(--paper-muted)">Employment</dt><dd style="margin: 0">Permanent · probation {{probation}}</dd>
+            <dt style="color: var(--paper-muted)">Proposed start</dt><dd style="margin: 0; color: {{startFg}}">{{startText}}</dd>
+          </dl>
+          <div>
+            <h3 style="margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--paper-muted)">Compensation</h3>
+            <dl style="margin: 0; display: grid; grid-template-columns: 170px 1fr; gap: 6px 12px">
+              <dt style="color: var(--paper-muted)">Base salary</dt><dd style="margin: 0; font-weight: 600; color: {{baseFg}}">{{baseText}}</dd>
+              <dt style="color: var(--paper-muted)">Allowances</dt><dd style="margin: 0; color: {{allowFg}}">{{allowText}}</dd>
+              <dt style="color: var(--paper-muted)">Total monthly</dt><dd style="margin: 0; font-weight: 700">{{totalText}}</dd>
+            </dl>
+          </div>
+          <div>
+            <h3 style="margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--paper-muted)">Assessment</h3>
+            <ul style="margin: 0; padding-left: 18px">
+              <sc-for list="{{scores}}" as="s" hint-placeholder-count="3"><li>{{s.stage}}: {{s.avg}} average ({{s.n}} interviewer{{s.plural}})</li></sc-for>
+            </ul>
+          </div>
+          <div>
+            <h3 style="margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--paper-muted)">Justification</h3>
+            <p style="margin: 0">{{justification}}</p>
+          </div>
+          <sc-if value="{{hasNotes}}" hint-placeholder-val="{{false}}">
+            <div>
+              <h3 style="margin: 0 0 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--paper-muted)">Recruiter notes</h3>
+              <p style="margin: 0; white-space: pre-line">{{notes}}</p>
+            </div>
+          </sc-if>
+          <div style="border-top: 1px solid var(--paper-line); padding-top: 12px; font-size: 12px; color: var(--paper-muted)">Prepared by Recruiter 1 · Approval: ______________________</div>
+        </article>
+        <p style="margin: 0; font-size: 13px; color: var(--muted)">The ATS never emails this brief. You copy or export it and send it yourself.</p>
+      </section>
+    </div>
+  </main>
+</div>
+</template>
+<script type="text/x-dc" id="dc-logic" data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system","section":"Appearance"},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null, base: '', allow: '2000000', start: '5 Jan 2027', probation: '3 months', notes: '', toast: '' };
+  }
+  themeVals() {
+    var self = this;
+    var theme = this.state.theme || this.props.theme || 'system';
+    var sysDark = false;
+    try { sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) {}
+    var isDark = theme === 'dark' || (theme === 'system' && sysDark);
+    return {
+      themeClass: theme, isDark: isDark, isLight: !isDark,
+      themeLabel: isDark ? 'Light mode' : 'Dark mode',
+      toggleTheme: function () { self.setState({ theme: isDark ? 'light' : 'dark' }); }
+    };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var num = function (v) { var d = String(v || '').replace(/[^0-9]/g, ''); return d ? parseInt(d, 10) : 0; };
+    var idr = function (n) { return 'IDR ' + n.toLocaleString('en-US'); };
+    var missing = '[not entered]';
+    var base = num(s.base), allow = num(s.allow);
+    var scores = [
+      { stage: 'HR Interview', n: 1, total: '17 / 20', avg: '4.25', plural: '' },
+      { stage: 'Technical Interview', n: 2, total: '31 / 40', avg: '3.88', plural: 's' },
+      { stage: 'Final Interview', n: 1, total: '18 / 20', avg: '4.50', plural: '' }
+    ];
+    var set = function (k) { return function (e) { var p = {}; p[k] = e.target.value; self.setState(p); }; };
+    var justification = 'New headcount to meet 2027 penetration-testing delivery commitments; two seats approved in the 2026 budget.';
+    var text = function () {
+      return [
+        'OFFER BRIEF — Entity A (EA) — Confidential',
+        'Candidate: Kevin Halim',
+        'Position: Penetration Tester · Senior Staff · Offensive Security',
+        'Employment: Permanent · probation ' + s.probation,
+        'Proposed start: ' + (s.start || missing),
+        'Base salary: ' + (base ? idr(base) : missing),
+        'Allowances: ' + (allow ? idr(allow) : missing),
+        'Total monthly: ' + (base || allow ? idr(base + allow) : missing),
+        'Assessment: ' + scores.map(function (x) { return x.stage + ' ' + x.avg; }).join('; '),
+        'Justification: ' + justification,
+        s.notes ? 'Recruiter notes: ' + s.notes : ''
+      ].filter(Boolean).join('\n');
+    };
+    return Object.assign(this.themeVals(), {
+      base: s.base, allow: s.allow, start: s.start, probation: s.probation, notes: s.notes,
+      setBase: set('base'), setAllow: set('allow'), setStart: set('start'), setProbation: set('probation'), setNotes: set('notes'),
+      baseText: base ? idr(base) : missing, baseFg: base ? 'var(--paper-text)' : 'var(--warn-fg)',
+      allowText: allow ? idr(allow) : missing, allowFg: allow ? 'var(--paper-text)' : 'var(--warn-fg)',
+      totalText: base || allow ? idr(base + allow) : missing,
+      startText: s.start || missing, startFg: s.start ? 'var(--paper-text)' : 'var(--warn-fg)',
+      hasNotes: !!s.notes,
+      scores: scores,
+      justification: justification,
+      hasToast: !!s.toast, toast: s.toast,
+      dismiss: function () { self.setState({ toast: '' }); },
+      copy: function () {
+        try { navigator.clipboard.writeText(text()); } catch (e) {}
+        self.setState({ toast: 'Brief copied. Paste it into your approval email.' });
+      },
+      exportPdf: function () { self.setState({ toast: 'Saved OfferBrief_Kevin-Halim_EA.pdf to Downloads.' }); }
+    });
+  }
+}
+</script>
+<div id="dc-root"></div>
+<div role="note" style="position:fixed;right:12px;bottom:12px;z-index:50;padding:6px 12px;border-radius:999px;background:#0F172A;color:#F8FAFC;font:600 12px/1.4 system-ui,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25)">Design prototype · sample data</div>
+<script src="dc-lite.js"></script>
+</body>
+</html>

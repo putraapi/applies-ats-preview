@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Backup and security · Talent ATS prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.app{--bg:#F8FAFC;--surface:#FFFFFF;--surface-2:#F1F5F9;--border:#E2E8F0;--border-2:#CBD5E1;--text:#0F172A;--text-2:#334155;--muted:#475569;--primary:#0369A1;--primary-h:#075985;--on-primary:#FFFFFF;--soft:#E0F2FE;--soft-fg:#075985;--warn-bg:#FEF3C7;--warn-fg:#92400E;--bad-bg:#FEE2E2;--bad-fg:#991B1B;--ok-bg:#DCFCE7;--ok-fg:#166534;--ai-bg:#F3E8FF;--ai-fg:#6B21A8;--focus:#38BDF8;color-scheme:light}
+.app.dark{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;color-scheme:dark}
+@media (prefers-color-scheme:dark){.app.system{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;color-scheme:dark}}
+a{color:var(--primary)}a:hover{color:var(--primary-h)}
+.nav a{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:8px;color:var(--text-2);text-decoration:none;font-weight:500;font-size:15px;transition:background .15s ease}
+.nav a:hover{background:var(--surface-2);color:var(--text)}
+.nav a.on{background:var(--soft);color:var(--soft-fg);font-weight:600}
+.b{cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s ease,border-color .15s ease}
+.bp{background:var(--primary);color:var(--on-primary);border:0}.bp:hover{background:var(--primary-h);color:var(--on-primary)}
+.bp:disabled{background:var(--border-2);color:var(--muted);cursor:progress}
+.bs{background:var(--surface);color:var(--text);border:1px solid var(--border-2)}.bs:hover{background:var(--surface-2);color:var(--text)}
+.bs:disabled{color:var(--muted);cursor:progress}
+.row:hover{background:var(--surface-2)}
+input,select,textarea{font-family:inherit}
+.fld{height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--border-2);background:var(--surface);color:var(--text);font-size:14px;width:100%;box-sizing:border-box}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+th,td{white-space:nowrap}
+@media (max-width:820px){.nav{flex-direction:row!important;flex-wrap:wrap}.sfoot{display:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<template id="dc">
+
+<div class="app {{themeClass}}" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-wrap: wrap">
+
+  <aside style="flex: 1 1 240px; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <div aria-hidden="true" style="width: 34px; height: 34px; border-radius: 9px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">ATS</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-weight: 700; font-size: 16px">Talent ATS</span>
+        <span style="font-size: 12px; color: var(--muted)">Recruiter pilot · v1.2</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Main" style="display: flex; flex-direction: column; gap: 4px">
+      <a href="index.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Vacancies</a>
+      <a href="candidate.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21a6 6 0 0 0-4-5.6"></path></svg>Candidates</a>
+      <a href="reports.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18M9 10v10"></path></svg>Reports</a>
+      <a href="jd-bank.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"></path><path d="M9 11h6M9 15h6"></path></svg>JD Bank</a>
+      <a class="on" href="backup.html" aria-current="page"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"></path></svg>Backup &amp; security</a>
+    </nav>
+    <button class="b bs" onClick="{{toggleTheme}}" style="min-height: 44px; padding: 0 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600">
+      <sc-if value="{{isDark}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+      <sc-if value="{{isLight}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+      {{themeLabel}}
+    </button>
+    <div class="sfoot" style="margin-top: auto; padding: 12px; border-radius: 10px; background: var(--surface-2); font-size: 13px; color: var(--text-2); display: flex; flex-direction: column; gap: 8px; line-height: 1.4">
+      <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E"></span>Local model online</span>
+      <span>Data stays on this Mac (localhost)</span>
+      <span>Last encrypted backup: {{lastBackup}}</span>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px clamp(16px, 3vw, 40px) 48px; display: flex; flex-direction: column; gap: 20px">
+
+    <header style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-size: 28px; font-weight: 700; letter-spacing: -0.02em">Backup &amp; security</h1>
+      <p style="margin: 0; font-size: 15px; color: var(--muted); max-width: 760px">This instance runs only on this MacBook. Data leaves it only through actions you take: scorecard links, offer briefs, report exports, vacancy transfers and the encrypted backup.</p>
+    </header>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+
+      <section aria-labelledby="bk" style="flex: 1 1 380px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+        <h2 id="bk" style="margin: 0; font-size: 16px; font-weight: 700">Backup</h2>
+        <dl style="margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; font-size: 14px">
+          <div><dt style="color: var(--muted); font-size: 13px">Last backup</dt><dd style="margin: 2px 0 0; font-weight: 700">{{lastBackup}}</dd></div>
+          <div><dt style="color: var(--muted); font-size: 13px">Next scheduled</dt><dd style="margin: 2px 0 0; font-weight: 600">Tomorrow, 02:00</dd></div>
+          <div><dt style="color: var(--muted); font-size: 13px">Destination</dt><dd style="margin: 2px 0 0; font-weight: 600">Company Google Drive</dd></div>
+          <div><dt style="color: var(--muted); font-size: 13px">Contents</dt><dd style="margin: 2px 0 0; font-weight: 600">Database + CV folder · 48 MB</dd></div>
+        </dl>
+        <p style="margin: 0; font-size: 13px; color: var(--muted)">Encrypted on this Mac before upload. Drive only ever stores the encrypted file.</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+          <button class="b bp" onClick="{{backupNow}}" disabled="{{backingUp}}" style="height: 44px; padding: 0 18px; border-radius: 10px; font-weight: 600; font-size: 14px">{{backupLabel}}</button>
+          <span role="status" style="font-size: 13px; color: var(--ok-fg); font-weight: 600">{{backupMsg}}</span>
+        </div>
+        <div style="border-top: 1px solid var(--border); padding-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+          <div style="flex: 1 1 200px; display: flex; flex-direction: column; gap: 2px">
+            <span style="font-size: 14px; font-weight: 600">Restore test</span>
+            <span style="font-size: 13px; color: {{restoreFg}}">{{restoreText}}</span>
+          </div>
+          <button class="b bs" onClick="{{restoreTest}}" disabled="{{restoring}}" style="height: 40px; padding: 0 14px; border-radius: 8px; font-weight: 600; font-size: 14px">{{restoreLabel}}</button>
+        </div>
+      </section>
+
+      <section aria-labelledby="dc" style="flex: 1 1 380px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+        <h2 id="dc" style="margin: 0; font-size: 16px; font-weight: 700">Device checks</h2>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+          <sc-for list="{{checks}}" as="c" hint-placeholder-count="6">
+            <li style="display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border)">
+              <span style="flex: none; min-width: 74px; text-align: center; font-size: 12px; font-weight: 700; padding: 3px 8px; border-radius: 6px; background: {{c.bg}}; color: {{c.fg}}">{{c.state}}</span>
+              <div style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 14px; font-weight: 600">{{c.label}}</span>
+                <span style="font-size: 13px; color: var(--muted)">{{c.detail}}</span>
+              </div>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+    </div>
+
+    <section aria-labelledby="out" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden">
+      <div style="padding: 16px 20px; border-bottom: 1px solid var(--border)">
+        <h2 id="out" style="margin: 0; font-size: 16px; font-weight: 700">Data that left this Mac</h2>
+        <p style="margin: 4px 0 0; font-size: 13px; color: var(--muted)">Every outbound action you took, newest first. Append-only.</p>
+      </div>
+      <div style="overflow-x: auto">
+        <x-table style="width: 100%; border-collapse: collapse; font-size: 14px">
+          <x-thead><x-tr style="text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em">
+            <x-th style="padding: 10px 20px; font-weight: 600">When</x-th><x-th style="padding: 10px 12px; font-weight: 600">Action</x-th><x-th style="padding: 10px 12px; font-weight: 600">What was included</x-th><x-th style="padding: 10px 20px; font-weight: 600">To</x-th>
+          </x-tr></x-thead>
+          <x-tbody>
+            <sc-for list="{{outbound}}" as="o" hint-placeholder-count="5">
+              <x-tr class="row" style="border-top: 1px solid var(--border)">
+                <x-td class="mono" style="padding: 12px 20px; font-size: 12px; color: var(--muted)">{{o.when}}</x-td>
+                <x-td style="padding: 12px; font-weight: 600">{{o.action}}</x-td>
+                <x-td style="padding: 12px; color: var(--text-2); white-space: normal; min-width: 260px">{{o.what}}</x-td>
+                <x-td style="padding: 12px 20px; color: var(--text-2)">{{o.to}}</x-td>
+              </x-tr>
+            </sc-for>
+          </x-tbody>
+        </x-table>
+      </div>
+    </section>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: stretch">
+      <section aria-labelledby="tr" style="flex: 1 1 420px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+        <div>
+          <h2 id="tr" style="margin: 0; font-size: 16px; font-weight: 700">Vacancy transfer</h2>
+          <p style="margin: 4px 0 0; font-size: 13px; color: var(--muted)">Hand a vacancy to the other recruiter with its candidates, files and full history.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end">
+          <div style="flex: 1 1 220px; display: flex; flex-direction: column; gap: 6px">
+            <label for="vx" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Vacancy to export</label>
+            <x-select id="vx" class="fld">
+              <x-option>Penetration Tester · JP-EA-SEC-004</x-option>
+              <x-option>SOC Analyst L1 · JP-EA-SOC-011</x-option>
+              <x-option>Cybersecurity Trainer · JP-EB-ACD-002</x-option>
+            </x-select>
+          </div>
+          <button class="b bs" onClick="{{exportVac}}" style="height: 42px; padding: 0 14px; border-radius: 8px; font-weight: 600; font-size: 14px">Export</button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center; padding: 14px; border: 1.5px dashed var(--border-2); border-radius: 10px">
+          <span style="flex: 1 1 220px; font-size: 14px; color: var(--text-2)">Drop a vacancy export (.zip) here to import it</span>
+          <button class="b bs" onClick="{{tryImport}}" style="height: 40px; padding: 0 14px; border-radius: 8px; font-weight: 600; font-size: 14px">Choose file</button>
+        </div>
+        <sc-if value="{{hasTransferMsg}}" hint-placeholder-val="{{false}}">
+          <div role="status" style="padding: 12px 14px; border-radius: 10px; background: {{transferBg}}; color: {{transferFg}}; font-size: 14px; line-height: 1.5">{{transferMsg}}</div>
+        </sc-if>
+      </section>
+
+      <section aria-labelledby="rt" style="flex: 1 1 340px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+        <h2 id="rt" style="margin: 0; font-size: 16px; font-weight: 700">Retention &amp; deletion</h2>
+        <div style="padding: 12px 14px; border-radius: 10px; background: var(--warn-bg); color: var(--warn-fg); font-size: 14px; line-height: 1.5">
+          <strong>Retention period not set.</strong> Waiting for HR and Legal to decide how long unsuccessful candidates’ data is kept (Open Question 12).
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="del" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Delete a candidate’s data on request</label>
+          <div style="display: flex; gap: 8px">
+            <input id="del" class="fld" placeholder="Search by name or email">
+            <button class="b bs" style="flex: none; height: 42px; padding: 0 14px; border-radius: 8px; font-weight: 600; font-size: 14px; color: var(--bad-fg)">Delete…</button>
+          </div>
+          <span style="font-size: 12px; color: var(--muted)">Removes the candidate from this instance only. Stage counts in reports remain, without personal data.</span>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</template>
+<script type="text/x-dc" id="dc-logic" data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system","section":"Appearance"},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null, backup: 'idle', lastBackup: 'today, 02:00', restore: 'idle', transfer: null };
+  }
+  componentWillUnmount() { clearTimeout(this.t1); clearTimeout(this.t2); }
+  themeVals() {
+    var self = this;
+    var theme = this.state.theme || this.props.theme || 'system';
+    var sysDark = false;
+    try { sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) {}
+    var isDark = theme === 'dark' || (theme === 'system' && sysDark);
+    return {
+      themeClass: theme, isDark: isDark, isLight: !isDark,
+      themeLabel: isDark ? 'Light mode' : 'Dark mode',
+      toggleTheme: function () { self.setState({ theme: isDark ? 'light' : 'dark' }); }
+    };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var ok = ['OK', 'var(--ok-bg)', 'var(--ok-fg)'], pend = ['Pending', 'var(--warn-bg)', 'var(--warn-fg)'];
+    var chk = function (st, label, detail) { return { state: st[0], bg: st[1], fg: st[2], label: label, detail: detail }; };
+    var tm = { conflict: ['Import refused: “SOC Analyst L1 (JP-EA-SOC-011)” already exists in this instance. Nothing was changed.', 'var(--bad-bg)', 'var(--bad-fg)'],
+      exported: ['Exported Vacancy_JP-EA-SEC-004.zip to Downloads (14 candidates, files and history). Logged below.', 'var(--ok-bg)', 'var(--ok-fg)'] };
+    var t = s.transfer ? tm[s.transfer] : null;
+    var outbound = [
+      { when: '09 Nov 02:00', action: 'Encrypted backup', what: 'Database and CV folder (encrypted)', to: 'Company Google Drive' },
+      { when: '08 Nov 14:10', action: 'Scorecard link', what: 'Name, vacancy and stage only — Dimas Rahman · Technical Interview', to: 'budi.h@[company domain]' },
+      { when: '08 Nov 11:32', action: 'Report export', what: 'time_to_fill_2026-11.csv (no personal data)', to: 'Downloads' },
+      { when: '07 Nov 16:05', action: 'Offer brief', what: 'Clara Lim · Data Analyst (PDF)', to: 'Downloads' },
+      { when: '05 Nov 09:48', action: 'Vacancy transfer', what: 'Curriculum Developer · JP-EB-ACD-005 (4 candidates)', to: 'Downloads' }
+    ];
+    if (s.transfer === 'exported') outbound.unshift({ when: '09 Nov 10:45', action: 'Vacancy transfer', what: 'Penetration Tester · JP-EA-SEC-004 (14 candidates)', to: 'Downloads' });
+    var restoreMap = { idle: ['Last tested 3 Nov 2026 — passed', 'var(--ok-fg)', 'Run restore test'], running: ['Restoring into a temporary copy…', 'var(--muted)', 'Testing…'], done: ['Tested just now — passed (database opens, 214 CVs match)', 'var(--ok-fg)', 'Run restore test'] };
+    var r = restoreMap[s.restore];
+    return Object.assign(this.themeVals(), {
+      lastBackup: s.lastBackup,
+      backingUp: s.backup === 'running',
+      backupLabel: s.backup === 'running' ? 'Backing up…' : 'Back up now',
+      backupMsg: s.backup === 'done' ? 'Backup complete.' : '',
+      backupNow: function () {
+        self.setState({ backup: 'running' });
+        self.t1 = setTimeout(function () { self.setState({ backup: 'done', lastBackup: 'today, just now' }); }, 1400);
+      },
+      restoring: s.restore === 'running', restoreText: r[0], restoreFg: r[1], restoreLabel: r[2],
+      restoreTest: function () {
+        self.setState({ restore: 'running' });
+        self.t2 = setTimeout(function () { self.setState({ restore: 'done' }); }, 1600);
+      },
+      checks: [
+        chk(ok, 'FileVault is on', 'Disk encryption verified on this MacBook'),
+        chk(ok, 'Listening on localhost only', 'Not reachable from the network'),
+        chk(ok, 'Memory: 16 GB', 'Meets the minimum for local AI features'),
+        chk(ok, 'Screen lock', 'Locks after 5 minutes, per company policy'),
+        chk(pend, 'Model runs natively on the Mac (Option B)', 'Awaiting security review sign-off'),
+        chk(pend, 'Synthetic CVs only', 'Real candidate data stays off until the security review approves it')
+      ],
+      outbound: outbound,
+      hasTransferMsg: !!t, transferMsg: t ? t[0] : '', transferBg: t ? t[1] : '', transferFg: t ? t[2] : '',
+      exportVac: function () { self.setState({ transfer: 'exported' }); },
+      tryImport: function () { self.setState({ transfer: 'conflict' }); }
+    });
+  }
+}
+</script>
+<div id="dc-root"></div>
+<div role="note" style="position:fixed;right:12px;bottom:12px;z-index:50;padding:6px 12px;border-radius:999px;background:#0F172A;color:#F8FAFC;font:600 12px/1.4 system-ui,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25)">Design prototype · sample data</div>
+<script src="dc-lite.js"></script>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Confirm requisition · Talent ATS prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.app{--bg:#F8FAFC;--surface:#FFFFFF;--surface-2:#F1F5F9;--border:#E2E8F0;--border-2:#CBD5E1;--text:#0F172A;--text-2:#334155;--muted:#475569;--primary:#0369A1;--primary-h:#075985;--on-primary:#FFFFFF;--soft:#E0F2FE;--soft-fg:#075985;--warn-bg:#FEF3C7;--warn-fg:#92400E;--bad-bg:#FEE2E2;--bad-fg:#991B1B;--ok-bg:#DCFCE7;--ok-fg:#166534;--ai-bg:#F3E8FF;--ai-fg:#6B21A8;--focus:#38BDF8;color-scheme:light}
+.app.dark{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;color-scheme:dark}
+@media (prefers-color-scheme:dark){.app.system{--bg:#0B1120;--surface:#111A2E;--surface-2:#1A2540;--border:#24314D;--border-2:#36456A;--text:#E5EAF2;--text-2:#CBD5E1;--muted:#9AA8BF;--primary:#38BDF8;--primary-h:#7DD3FC;--on-primary:#062437;--soft:#0C2D48;--soft-fg:#7DD3FC;--warn-bg:#3A2A0A;--warn-fg:#FCD34D;--bad-bg:#3B1218;--bad-fg:#FCA5A5;--ok-bg:#0E2E1C;--ok-fg:#86EFAC;--ai-bg:#2A1645;--ai-fg:#D8B4FE;--focus:#7DD3FC;color-scheme:dark}}
+a{color:var(--primary)}a:hover{color:var(--primary-h)}
+.nav a{display:flex;align-items:center;gap:12px;min-height:44px;padding:0 12px;border-radius:8px;color:var(--text-2);text-decoration:none;font-weight:500;font-size:15px;transition:background .15s ease}
+.nav a:hover{background:var(--surface-2);color:var(--text)}
+.nav a.on{background:var(--soft);color:var(--soft-fg);font-weight:600}
+.b{cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s ease,border-color .15s ease}
+.bp{background:var(--primary);color:var(--on-primary);border:0}.bp:hover{background:var(--primary-h);color:var(--on-primary)}
+.bp:disabled{background:var(--border-2);color:var(--muted);cursor:not-allowed}
+.bs{background:var(--surface);color:var(--text);border:1px solid var(--border-2)}.bs:hover{background:var(--surface-2);color:var(--text)}
+input,select,textarea{font-family:inherit}
+.fld{height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--border-2);background:var(--surface);color:var(--text);font-size:14px;width:100%;box-sizing:border-box}
+input[type=checkbox]{width:18px;height:18px;accent-color:var(--primary)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+@media (max-width:820px){.nav{flex-direction:row!important;flex-wrap:wrap}.sfoot{display:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<template id="dc">
+
+<div class="app {{themeClass}}" style="font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; flex-wrap: wrap">
+
+  <aside style="flex: 1 1 240px; background: var(--surface); border-right: 1px solid var(--border); padding: 20px 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px">
+      <div aria-hidden="true" style="width: 34px; height: 34px; border-radius: 9px; background: var(--primary); color: var(--on-primary); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px">ATS</div>
+      <div style="display: flex; flex-direction: column">
+        <span style="font-weight: 700; font-size: 16px">Talent ATS</span>
+        <span style="font-size: 12px; color: var(--muted)">Recruiter pilot · v1.2</span>
+      </div>
+    </div>
+    <nav class="nav" aria-label="Main" style="display: flex; flex-direction: column; gap: 4px">
+      <a class="on" href="index.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>Vacancies</a>
+      <a href="candidate.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"></circle><path d="M2 21a7 7 0 0 1 14 0"></path><path d="M16 4a4 4 0 0 1 0 8"></path><path d="M22 21a6 6 0 0 0-4-5.6"></path></svg>Candidates</a>
+      <a href="reports.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><path d="M3 10h18M9 10v10"></path></svg>Reports</a>
+      <a href="jd-bank.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h10l4 4v14H5z"></path><path d="M9 11h6M9 15h6"></path></svg>JD Bank</a>
+      <a href="backup.html"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6z"></path></svg>Backup &amp; security</a>
+    </nav>
+    <button class="b bs" onClick="{{toggleTheme}}" style="min-height: 44px; padding: 0 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 600">
+      <sc-if value="{{isDark}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path></svg></sc-if>
+      <sc-if value="{{isLight}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg></sc-if>
+      {{themeLabel}}
+    </button>
+    <div class="sfoot" style="margin-top: auto; padding: 12px; border-radius: 10px; background: var(--surface-2); font-size: 13px; color: var(--text-2); display: flex; flex-direction: column; gap: 8px; line-height: 1.4">
+      <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: #22C55E"></span>Local model online</span>
+      <span>Data stays on this Mac (localhost)</span>
+      <span>Last encrypted backup: today, 02:00</span>
+    </div>
+  </aside>
+
+  <main style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px clamp(16px, 3vw, 40px) 40px; display: flex; flex-direction: column; gap: 20px">
+
+    <nav aria-label="Breadcrumb" style="font-size: 14px; color: var(--muted); display: flex; gap: 8px">
+      <a href="index.html" style="text-decoration: none; font-weight: 500">Vacancies</a><span aria-hidden="true">/</span><span>New vacancy</span>
+    </nav>
+
+    <header style="display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: flex-end">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.02em">Confirm requisition fields</h1>
+        <p style="margin: 0; font-size: 15px; color: var(--muted)">Read by label from the Job Requisition Form — no AI used. Nothing is saved until you create the vacancy.</p>
+      </div>
+      <ol aria-label="Progress" style="list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; font-size: 13px; font-weight: 600">
+        <li style="padding: 6px 12px; border-radius: 999px; background: var(--ok-bg); color: var(--ok-fg)">1 · Uploaded</li>
+        <li aria-current="step" style="padding: 6px 12px; border-radius: 999px; background: var(--soft); color: var(--soft-fg)">2 · Confirm fields</li>
+        <li style="padding: 6px 12px; border-radius: 999px; background: var(--surface-2); color: var(--muted)">3 · Vacancy open</li>
+      </ol>
+    </header>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div role="status" style="display: flex; gap: 12px; align-items: flex-start; padding: 12px 16px; border-radius: 10px; background: var(--warn-bg); color: var(--warn-fg); font-size: 14px; line-height: 1.5">
+        <strong style="flex: none">Outdated form</strong>
+        <span>Header shows <span class="mono">HR-REQ-01 rev.02</span>; the current template is <span class="mono">rev.03</span>. Fields were still read — check them carefully.</span>
+      </div>
+      <sc-if value="{{mismatch}}" hint-placeholder-val="{{true}}">
+        <div role="alert" style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 16px; border-radius: 10px; background: var(--bad-bg); color: var(--bad-fg); font-size: 14px; line-height: 1.5">
+          <strong style="flex: none">Entity mismatch</strong>
+          <span style="flex: 1 1 320px">The Entity dropdown says <strong>Entity B (EB)</strong>, but Job Profile Code <span class="mono">JP-EA-SEC-004</span> belongs to <strong>Entity A (EA)</strong>. Choose the correct entity below.</span>
+        </div>
+      </sc-if>
+    </div>
+
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start">
+
+      <section aria-label="Source document" style="flex: 1 1 340px; min-width: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+          <span class="mono" style="font-size: 13px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">Requisition_PenTester_signed.pdf</span>
+          <span style="font-size: 12px; color: var(--muted)">2 pages</span>
+        </div>
+        <div style="height: 560px; border-radius: 8px; border: 1px dashed var(--border-2); background: var(--surface-2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--muted); font-size: 14px; text-align: center; padding: 16px; box-sizing: border-box">
+          <svg aria-hidden="true" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><path d="M14 3v6h6M8 13h8M8 17h5"></path></svg>
+          [Requisition PDF preview — selecting a field highlights its label here]
+        </div>
+        <p style="margin: 0; font-size: 13px; color: var(--muted); line-height: 1.5">The signed PDF is attached to the vacancy as evidence of approval.</p>
+      </section>
+
+      <div style="flex: 2 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+
+        <section aria-labelledby="s1" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 16px">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap">
+            <h2 id="s1" style="margin: 0; font-size: 16px; font-weight: 700">Role details</h2>
+            <span style="font-size: 13px; color: var(--muted)">{{readCount}} read · 1 not found · {{flagCount}} flagged</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="ent" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Entity</label>
+            <x-select id="ent" class="fld" onChange="{{pickEntity}}" value="{{entity}}" style="border-color: {{entityLine}}; border-width: 2px">
+              <x-option value="EB">Entity B (EB) — from form</x-option>
+              <x-option value="EA">Entity A (EA) — matches Job Profile Code</x-option>
+            </x-select>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px 16px">
+            <sc-for list="{{fields}}" as="f" hint-placeholder-count="10">
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <label for="f{{$index}}" style="font-size: 13px; font-weight: 600; color: var(--text-2)">{{f.label}}</label>
+                <input id="f{{$index}}" class="fld" defaultValue="{{f.value}}" placeholder="{{f.ph}}" style="border-color: {{f.line}}; border-width: {{f.bw}}; background: {{f.bg}}">
+                <sc-if value="{{f.missing}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; font-weight: 600; color: var(--bad-fg)">Not found on the form — enter it manually</span></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </section>
+
+        <section aria-labelledby="s2" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <h2 id="s2" style="margin: 0; font-size: 16px; font-weight: 700">Budget</h2>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px 16px">
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="b1" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Request type</label><input id="b1" class="fld" defaultValue="New headcount"></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="b2" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Budget source</label><input id="b2" class="fld" defaultValue="Approved 2026 budget"></div>
+            <div style="display: flex; flex-direction: column; gap: 6px"><label for="b3" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Commission</label><input id="b3" class="fld" defaultValue="No"></div>
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="b4" style="font-size: 13px; font-weight: 600; color: var(--text-2); display: flex; align-items: center; gap: 6px">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
+                Budget / salary range
+              </label>
+              <input id="b4" class="fld" defaultValue="[RANGE]">
+              <span style="font-size: 12px; color: var(--muted)">Recruiters only. Never included in scorecard links.</span>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="s3" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: baseline">
+            <h2 id="s3" style="margin: 0; font-size: 16px; font-weight: 700">Job profile</h2>
+            <span style="font-size: 13px; color: var(--muted)">Role existence: <strong style="color: var(--text)">Existed before</strong></span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 10px; background: var(--surface-2); font-size: 14px">
+            <span class="mono" style="font-weight: 500">JP-EA-SEC-004</span>
+            <span style="color: var(--text-2)">Penetration Tester · Offensive Security</span>
+            <span style="margin-left: auto; font-size: 13px; color: var(--muted)">JD Bank file dated 14 Aug 2026 · frozen when the vacancy opens</span>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 20px">
+            <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 13px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.04em">Must-have</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: var(--text-2)">
+                <li>2+ years in web or network penetration testing</li>
+                <li>OSCP or equivalent hands-on certification</li>
+                <li>Writes clear technical and executive reports</li>
+              </ul>
+            </div>
+            <div style="flex: 1 1 240px; display: flex; flex-direction: column; gap: 8px">
+              <h3 style="margin: 0; font-size: 13px; font-weight: 700; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.04em">Nice-to-have</h3>
+              <ul style="margin: 0; padding-left: 18px; font-size: 14px; line-height: 1.6; color: var(--text-2)">
+                <li>Mobile or cloud security testing</li>
+                <li>Public CVEs or bug bounty record</li>
+                <li><span style="font-size: 12px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: var(--warn-bg); color: var(--warn-fg); margin-right: 6px">Form amendment</span>Bahasa Indonesia and English reporting</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section aria-labelledby="s4" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+          <div style="display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; align-items: baseline">
+            <h2 id="s4" style="margin: 0; font-size: 16px; font-weight: 700">Pipeline stages</h2>
+            <span style="font-size: 13px; color: var(--muted)">Optional stages are set by “Recruitment Processes” on the form</span>
+          </div>
+          <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 8px">
+            <sc-for list="{{stages}}" as="s" hint-placeholder-count="14">
+              <li>
+                <label style="display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); font-size: 14px; cursor: pointer">
+                  <input type="checkbox" defaultChecked="{{s.on}}" disabled="{{s.locked}}">
+                  <span style="flex: 1; color: var(--text)"><span style="color: var(--muted); font-variant-numeric: tabular-nums">{{s.n}}.</span> {{s.name}}</span>
+                  <span style="font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: {{s.tagBg}}; color: {{s.tagFg}}; white-space: nowrap">{{s.tag}}</span>
+                </label>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+
+        <section aria-labelledby="s5" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+          <h2 id="s5" style="margin: 0; font-size: 16px; font-weight: 700">Interviewers</h2>
+          <p style="margin: 0; font-size: 13px; color: var(--muted)">They get a scorecard link by email. They never log in to the ATS.</p>
+          <div style="overflow-x: auto">
+            <x-table style="width: 100%; min-width: 480px; border-collapse: collapse; font-size: 14px">
+              <x-thead><x-tr style="text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em"><x-th style="padding: 8px 0; font-weight: 600">Name</x-th><x-th style="padding: 8px; font-weight: 600">Email</x-th><x-th style="padding: 8px 0; font-weight: 600">Interview type</x-th></x-tr></x-thead>
+              <x-tbody>
+                <x-tr style="border-top: 1px solid var(--border)"><x-td style="padding: 10px 0">Andi Wirawan</x-td><x-td class="mono" style="padding: 10px 8px; font-size: 13px">andi.w@[company domain]</x-td><x-td style="padding: 10px 0">Technical Interview</x-td></x-tr>
+                <x-tr style="border-top: 1px solid var(--border)"><x-td style="padding: 10px 0">Ratna Sari</x-td><x-td class="mono" style="padding: 10px 8px; font-size: 13px">ratna.s@[company domain]</x-td><x-td style="padding: 10px 0">Final Interview</x-td></x-tr>
+              </x-tbody>
+            </x-table>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div style="position: sticky; bottom: 0; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 14px 20px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border-2)">
+      <span style="font-size: 14px; color: var(--text-2); flex: 1 1 260px">{{footerNote}}</span>
+      <a class="b bs" href="index.html" style="height: 44px; padding: 0 16px; border-radius: 10px; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center">Discard</a>
+      <sc-if value="{{mismatch}}" hint-placeholder-val="{{true}}">
+        <button class="b bp" disabled="{{true}}" style="height: 44px; padding: 0 18px; border-radius: 10px; font-weight: 600; font-size: 14px">Resolve flags to continue</button>
+      </sc-if>
+      <sc-if value="{{resolved}}" hint-placeholder-val="{{false}}">
+        <a class="b bp" href="pipeline.html" style="height: 44px; padding: 0 18px; border-radius: 10px; font-weight: 600; font-size: 14px; display: inline-flex; align-items: center">Create vacancy &amp; open</a>
+      </sc-if>
+    </div>
+  </main>
+</div>
+</template>
+<script type="text/x-dc" id="dc-logic" data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system","section":"Appearance"},"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { theme: null, entity: 'EB' };
+  }
+  themeVals() {
+    var self = this;
+    var theme = this.state.theme || this.props.theme || 'system';
+    var sysDark = false;
+    try { sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) {}
+    var isDark = theme === 'dark' || (theme === 'system' && sysDark);
+    return {
+      themeClass: theme, isDark: isDark, isLight: !isDark,
+      themeLabel: isDark ? 'Light mode' : 'Dark mode',
+      toggleTheme: function () { self.setState({ theme: isDark ? 'light' : 'dark' }); }
+    };
+  }
+  renderVals() {
+    var self = this;
+    var mismatch = this.state.entity !== 'EA';
+    var raw = [
+      ['Job title', 'Penetration Tester'], ['Department', 'Offensive Security'], ['Level', 'Senior Staff'],
+      ['Hiring manager', 'Andi Wirawan'], ['Direct report', ''], ['Number of vacancy', '2'],
+      ['Role type', 'Technical'], ['Employment type', 'Permanent'], ['Contract duration', 'Not applicable'],
+      ['Expected join date', '5 Jan 2027'], ['Work location', 'Jakarta · Hybrid'], ['Sourcing priority', 'LinkedIn, referral']
+    ];
+    var fields = raw.map(function (r) {
+      var missing = r[1] === '';
+      return {
+        label: r[0], value: r[1], missing: missing, ph: missing ? 'Enter manually' : '',
+        line: missing ? 'var(--bad-fg)' : 'var(--border-2)', bw: missing ? '2px' : '1px',
+        bg: missing ? 'var(--bad-bg)' : 'var(--surface)'
+      };
+    });
+    var stageDefs = [
+      ['Applied', 'locked'], ['Screening', 'default'], ['HR Interview', 'default'], ['Technical Assessment', 'form-on'],
+      ['Technical Interview', 'form-on'], ['User Interview', 'form-off'], ['Final Interview', 'default'],
+      ['Background Checking', 'default'], ['Reference Checking', 'default'], ['Salary Approval', 'default'],
+      ['Offering & Negotiation', 'default'], ['Agreement', 'locked'], ['MCU', 'default'], ['Hired', 'locked']
+    ];
+    var tags = {
+      locked: ['Locked', 'var(--surface-2)', 'var(--text-2)'],
+      default: ['Default on', 'var(--surface-2)', 'var(--muted)'],
+      'form-on': ['From form', 'var(--soft)', 'var(--soft-fg)'],
+      'form-off': ['Off by form', 'var(--warn-bg)', 'var(--warn-fg)']
+    };
+    var stages = stageDefs.map(function (s, i) {
+      var t = tags[s[1]];
+      return { n: i + 1, name: s[0], on: s[1] !== 'form-off', locked: s[1] === 'locked', tag: t[0], tagBg: t[1], tagFg: t[2] };
+    });
+    return Object.assign(this.themeVals(), {
+      mismatch: mismatch,
+      resolved: !mismatch,
+      entity: this.state.entity,
+      entityLine: mismatch ? 'var(--bad-fg)' : 'var(--ok-fg)',
+      pickEntity: function (e) { self.setState({ entity: e.target.value }); },
+      fields: fields,
+      readCount: 19,
+      flagCount: mismatch ? 2 : 1,
+      stages: stages,
+      footerNote: mismatch
+        ? 'Pick the correct entity to continue. The empty “Direct report” field can be filled now or later.'
+        : 'Ready. Creating the vacancy freezes the JD snapshot and logs the first move to Open — the Time to Fill clock starts.'
+    });
+  }
+}
+</script>
+<div id="dc-root"></div>
+<div role="note" style="position:fixed;right:12px;bottom:12px;z-index:50;padding:6px 12px;border-radius:999px;background:#0F172A;color:#F8FAFC;font:600 12px/1.4 system-ui,sans-serif;box-shadow:0 2px 8px rgba(0,0,0,.25)">Design prototype · sample data</div>
+<script src="dc-lite.js"></script>
+</body>
+</html>
