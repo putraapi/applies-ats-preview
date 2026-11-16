@@ -142,7 +142,18 @@ input[type=radio]{width:18px;height:18px;accent-color:var(--primary)}
         <div style="display: flex; flex-direction: column; gap: 6px">
           <label for="who" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Interviewers</label>
           <input id="who" class="fld" value="{{who}}" onInput="{{setWho}}">
-          <span style="font-size: 12px; color: var(--muted)">Pre-filled from the requisition for this interview type.</span>
+          <span style="font-size: 12px; color: var(--muted)">Pre-filled from the requisition for this interview type. Separate names with commas.</span>
+        </div>
+        <sc-if value="{{hasClash}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="padding: 12px 14px; border-radius: 10px; background: var(--warn-bg); color: var(--warn-fg); font-size: 13px; line-height: 1.5; display: flex; flex-direction: column; gap: 4px">
+            <strong>Possible double booking</strong>
+            <sc-for list="{{clashes}}" as="cl" hint-placeholder-count="1"><span>• {{cl}}</span></sc-for>
+            <span style="font-size: 12px">You can still save; pick another time if the interviewer cannot do both.</span>
+          </div>
+        </sc-if>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; align-items: center">
+          <button class="b bs" onClick="{{save}}" style="height: 40px; padding: 0 14px; border-radius: 8px; font-weight: 600; font-size: 14px">Save to schedule</button>
+          <span style="font-size: 12px; color: var(--muted)">Records the slot so other invitations can spot clashes. Nothing is sent.</span>
         </div>
       </section>
 
@@ -154,6 +165,28 @@ input[type=radio]{width:18px;height:18px;accent-color:var(--primary)}
         <div style="padding: 20px; font-size: 14px; line-height: 1.7; white-space: pre-line; color: var(--text)">{{body}}</div>
       </section>
     </div>
+
+    <section aria-labelledby="sch" style="background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden">
+      <div style="padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: baseline">
+        <h2 id="sch" style="margin: 0; font-size: 16px; font-weight: 700">Interview schedule</h2>
+        <span style="font-size: 13px; color: var(--muted)">Penetration Tester · this week</span>
+      </div>
+      <div style="overflow-x: auto">
+        <x-table style="width: 100%; border-collapse: collapse; font-size: 14px; min-width: 560px">
+          <x-thead><x-tr style="text-align: left; color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em">
+            <x-th style="padding: 10px 20px">Candidate</x-th><x-th style="padding: 10px 12px">Interview</x-th><x-th style="padding: 10px 12px">When (WIB)</x-th><x-th style="padding: 10px 12px">Interviewers</x-th>
+          </x-tr></x-thead>
+          <x-tbody>
+            <sc-for list="{{slots}}" as="sl" hint-placeholder-count="3">
+              <x-tr style="border-top: 1px solid var(--border); background: {{sl.bg}}">
+                <x-td style="padding: 10px 20px; font-weight: 600">{{sl.cand}}</x-td><x-td style="padding: 10px 12px">{{sl.type}}</x-td>
+                <x-td style="padding: 10px 12px">{{sl.when}}</x-td><x-td style="padding: 10px 12px">{{sl.who}}</x-td>
+              </x-tr>
+            </sc-for>
+          </x-tbody>
+        </x-table>
+      </div>
+    </section>
   </main>
 </div>
 </template>
@@ -163,7 +196,14 @@ class Component extends DCLogic {
     super(props);
     this.state = {
       theme: null, type: 'Final Interview', date: 'Thursday, 12 Nov 2026', time: '10:00', duration: '60 minutes',
-      mode: 'online', location: '', who: 'Ratna Sari (Head of Offensive Security)', toast: ''
+      mode: 'online', location: '', who: 'Ratna Sari (Head of Offensive Security)', toast: '',
+      // Sample schedule. Switch the template to Technical Interview to see a clash with Budi Hartono.
+      booked: [
+        { cand: 'Fitri Handayani', type: 'HR Interview', date: 'Thursday, 12 Nov 2026', time: '09:00', dur: 60, who: 'Rani Puspita (Talent Acquisition)' },
+        { cand: 'Teguh Prakoso', type: 'Technical Interview', date: 'Thursday, 12 Nov 2026', time: '10:30', dur: 60, who: 'Budi Hartono, Eko Saputra' },
+        { cand: 'Hendra Gunawan', type: 'Final Interview', date: 'Friday, 13 Nov 2026', time: '14:00', dur: 45, who: 'Ratna Sari (Head of Offensive Security)' }
+      ],
+      savedId: null
     };
   }
   themeVals() {
@@ -208,6 +248,25 @@ class Component extends DCLogic {
       'Recruiter 1',
       'Talent Acquisition, Entity A'
     ].join('\n');
+    // Interviewer names match ignoring case and anything in brackets; back-to-back slots do not clash.
+    var names = function (str) {
+      return str.replace(/\([^)]*\)/g, '').split(/,|;|&|\band\b/i).map(function (x) { return x.trim().toLowerCase(); }).filter(Boolean);
+    };
+    var mins = function (t) { var m = /^(\d{1,2})[:.](\d{2})$/.exec(t.trim()); return m ? Number(m[1]) * 60 + Number(m[2]) : null; };
+    var dur = parseInt(s.duration, 10);
+    var mine = names(s.who), start = mins(s.time);
+    var clashes = [];
+    s.booked.forEach(function (b, i) {
+      if (i === s.savedId || b.date !== s.date.trim() || start === null) return;
+      var bs = mins(b.time);
+      if (!(start < bs + b.dur && bs < start + dur)) return;
+      names(b.who).forEach(function (n) {
+        if (mine.indexOf(n) >= 0) {
+          var shown = n.replace(/\b\w/g, function (c) { return c.toUpperCase(); });
+          clashes.push(shown + ' already has ' + b.type + ' with ' + b.cand + ' on ' + b.date + ', ' + b.time + ' WIB (' + b.dur + ' min).');
+        }
+      });
+    });
     var seg = function (on) { return on ? { bg: 'var(--surface)', fg: 'var(--text)', pressed: 'true' } : { bg: 'transparent', fg: 'var(--muted)', pressed: 'false' }; };
     var set = function (k) { return function (e) { var p = {}; p[k] = e.target.value; self.setState(p); }; };
     return Object.assign(this.themeVals(), {
@@ -227,6 +286,16 @@ class Component extends DCLogic {
       body: body,
       mailto: 'mailto:dimas.rahman@example.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body),
       hasToast: !!s.toast, toast: s.toast,
+      hasClash: clashes.length > 0, clashes: clashes,
+      slots: s.booked.map(function (b, i) {
+        return { cand: b.cand, type: b.type, when: b.date + ', ' + b.time + ' · ' + b.dur + ' min', who: b.who, bg: i === s.savedId ? 'var(--soft)' : 'transparent' };
+      }),
+      save: function () {
+        var slot = { cand: 'Dimas Rahman', type: s.type, date: s.date.trim(), time: s.time.trim(), dur: dur, who: s.who };
+        var list = s.savedId === null ? s.booked.concat([slot]) : s.booked.map(function (b, i) { return i === s.savedId ? slot : b; });
+        self.setState({ booked: list, savedId: s.savedId === null ? list.length - 1 : s.savedId,
+          toast: 'Saved to the schedule. Other invitations will warn if these interviewers are double-booked.' });
+      },
       dismiss: function () { self.setState({ toast: '' }); },
       copy: function () {
         try { navigator.clipboard.writeText('Subject: ' + subject + '\n\n' + body); } catch (e) {}

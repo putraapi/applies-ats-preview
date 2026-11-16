@@ -27,6 +27,9 @@ input[type=radio]{width:18px;height:18px;accent-color:var(--primary)}
 :focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .mono{font-family:'JetBrains Mono',ui-monospace,monospace}
+.fld{height:42px;padding:0 12px;border-radius:8px;border:1px solid var(--border-2);background:var(--surface);color:var(--text);font-size:14px;box-sizing:border-box}
+.chip{display:inline-flex;align-items:center;gap:4px;min-height:30px;padding:0 4px 0 12px;border-radius:999px;background:var(--soft);color:var(--soft-fg);font-size:13px;font-weight:600}
+.chip button{width:24px;height:24px;border:0;border-radius:999px;background:transparent;color:inherit;font-size:15px;cursor:pointer}.chip button:hover{background:var(--surface)}
 @media (max-width:820px){.nav{flex-direction:row!important;flex-wrap:wrap}.sfoot{display:none!important}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -145,19 +148,53 @@ input[type=radio]{width:18px;height:18px;accent-color:var(--primary)}
       </section>
     </sc-if>
 
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div role="search" aria-label="Filter the board" style="display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end">
+        <div style="display: flex; flex-direction: column; gap: 6px; flex: 1 1 200px; max-width: 260px">
+          <label for="fq" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Search</label>
+          <input id="fq" class="fld" value="{{fq}}" onInput="{{setQ}}" placeholder="Name or current role">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="fst" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Time in stage</label>
+          <x-select id="fst" class="fld" value="{{fStale}}" onChange="{{setStale}}">
+            <x-option value="">Any</x-option><x-option value="3">3+ days</x-option><x-option value="7">7+ days</x-option><x-option value="14">14+ days</x-option>
+          </x-select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="fsrc" style="font-size: 13px; font-weight: 600; color: var(--text-2)">Source</label>
+          <x-select id="fsrc" class="fld" value="{{fSource}}" onChange="{{setSource}}">
+            <x-option value="">Any</x-option><x-option value="LinkedIn">LinkedIn</x-option><x-option value="Referral">Referral</x-option><x-option value="Job portal">Job portal</x-option><x-option value="Other">Other</x-option>
+          </x-select>
+        </div>
+      </div>
+      <sc-if value="{{filtered}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center">
+          <span role="status" style="font-size: 13px; color: var(--muted)">Showing {{shownCount}} of {{totalCount}} active candidates</span>
+          <sc-for list="{{chips}}" as="ch" hint-placeholder-count="2">
+            <span class="chip">{{ch.label}}<button onClick="{{ch.remove}}" aria-label="Remove filter: {{ch.label}}">×</button></span>
+          </sc-for>
+          <button class="b" onClick="{{clearFilters}}" style="border: 0; background: transparent; color: var(--text-2); font-size: 13px; font-weight: 600; text-decoration: underline; min-height: 30px">Clear all</button>
+          <span style="font-size: 12px; color: var(--muted)">Filters stay in the link, so the view can be shared.</span>
+        </div>
+      </sc-if>
+    </div>
+
     <div style="overflow-x: auto; padding-bottom: 8px">
       <div style="display: flex; gap: 12px; align-items: flex-start; min-width: min-content">
         <sc-for list="{{columns}}" as="col" hint-placeholder-count="6">
-          <section aria-label="{{col.name}}, {{col.count}} candidates" style="width: 256px; flex: none; background: var(--col); border: 1px solid var(--border); border-radius: 12px; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px">
+          <section aria-label="{{col.name}}, {{col.countText}} candidates" style="width: 256px; flex: none; background: var(--col); border: 1px solid var(--border); border-radius: 12px; padding: 10px; box-sizing: border-box; display: flex; flex-direction: column; gap: 8px">
             <div style="display: flex; align-items: center; gap: 6px; padding: 4px 4px 2px">
               <sc-if value="{{col.locked}}" hint-placeholder-val="{{false}}">
                 <svg role="img" aria-label="Locked stage" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"></rect><path d="M8 11V7a4 4 0 0 1 8 0v4"></path></svg>
               </sc-if>
               <h2 style="margin: 0; font-size: 13px; font-weight: 700">{{col.name}}</h2>
-              <span style="margin-left: auto; font-size: 12px; font-weight: 700; color: var(--text-2); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 1px 8px">{{col.count}}</span>
+              <span style="margin-left: auto; font-size: 12px; font-weight: 700; color: var(--text-2); background: var(--surface); border: 1px solid var(--border); border-radius: 999px; padding: 1px 8px">{{col.countText}}</span>
             </div>
             <sc-if value="{{col.note}}" hint-placeholder-val="{{false}}">
               <span style="font-size: 12px; color: var(--muted); padding: 0 4px">{{col.noteText}}</span>
+            </sc-if>
+            <sc-if value="{{col.noneMatch}}" hint-placeholder-val="{{false}}">
+              <span style="font-size: 12px; color: var(--muted); padding: 0 4px">None match the filters</span>
             </sc-if>
             <sc-if value="{{col.empty}}" hint-placeholder-val="{{false}}">
               <p style="margin: 0; padding: 14px 8px; border: 1px dashed var(--border-2); border-radius: 8px; text-align: center; font-size: 12px; color: var(--muted)">No one here</p>
@@ -181,6 +218,9 @@ input[type=radio]{width:18px;height:18px;accent-color:var(--primary)}
                   <span>{{c.source}}</span>
                   <span style="margin-left: auto; color: {{c.ageFg}}; font-weight: {{c.ageW}}">{{c.ageText}}</span>
                 </div>
+                <sc-if value="{{c.hasFollow}}" hint-placeholder-val="{{false}}">
+                  <a href="{{c.followHref}}" style="font-size: 12px; font-weight: 600">{{c.followLabel}} →</a>
+                </sc-if>
                 <div style="display: flex; gap: 6px; border-top: 1px solid var(--border); padding-top: 8px">
                   <button class="b bs" onClick="{{c.openOutcome}}" aria-label="Mark outcome for {{c.name}}" style="height: 34px; padding: 0 10px; border-radius: 7px; font-size: 12px; font-weight: 600">Outcome</button>
                   <sc-if value="{{c.canAdvance}}" hint-placeholder-val="{{true}}">
@@ -204,6 +244,7 @@ class Component extends DCLogic {
     this.state = {
       theme: null,
       toast: null,
+      fq: '', fStale: '', fSource: '',
       oc: null,
       cands: [
         { id: 1, name: 'Arif Hidayat', current: 'Security Analyst · Telkomsigma', source: 'LinkedIn', days: 0, stage: 0, ai: 'proc', sc: 0 },
@@ -242,6 +283,21 @@ class Component extends DCLogic {
     var cands = this.state.cands.filter(function (c) { return !c.out; });
     var filled = cands.filter(function (c) { return c.stage >= AGREE; }).length;
     var now = '9 Nov 2026, 10:42';
+    // Next step suggested for the stage a card is in (or just entered). Nothing is created or sent.
+    var follow = function (si) {
+      if (interview[si]) return { label: 'Draft the invitation', href: 'invitation.html' };
+      if (si === 8 || si === 9) return { label: 'Open the Offer Brief', href: 'offer-brief.html' };
+      return null;
+    };
+    var st = this.state;
+    var q = st.fq.trim().toLowerCase();
+    var matches = function (c) {
+      if (q && c.name.toLowerCase().indexOf(q) < 0 && c.current.toLowerCase().indexOf(q) < 0) return false;
+      if (st.fStale && c.days < Number(st.fStale)) return false;
+      if (st.fSource && c.source !== st.fSource) return false;
+      return true;
+    };
+    var filtered = !!(q || st.fStale || st.fSource);
 
     var doMove = function (c, si) {
       var from = stages[si], to = stages[si + 1];
@@ -249,14 +305,17 @@ class Component extends DCLogic {
       var tone = 'ok';
       if (interview[si] && c.sc < interview[si]) { msg += ' No scorecard yet for ' + from + ' — moved anyway; follow up with the interviewer.'; tone = 'warn'; }
       if (si + 1 === AGREE) msg += ' Seat ' + (filled + 1) + ' of ' + SEATS + ' filled; Time to Hire recorded.';
+      var f = follow(si + 1);
       self.setState({
         cands: self.state.cands.map(function (x) { return x.id === c.id ? Object.assign({}, x, { stage: si + 1, days: 0, sc: 0 }) : x; }),
-        toast: { msg: msg, tone: tone }
+        toast: { msg: msg, tone: tone, action: f ? f.label : null, run: f ? function () { window.location.href = f.href; } : null }
       });
     };
 
     var columns = stages.map(function (name, si) {
-      var items = cands.filter(function (c) { return c.stage === si; }).map(function (c) {
+      var inCol = cands.filter(function (c) { return c.stage === si; });
+      var items = inCol.filter(matches).map(function (c) {
+        var f = follow(si);
         var need = interview[si] || 0;
         var aiMap = { proc: ['Parsing…', 'var(--surface-2)', 'var(--muted)'], ready: ['AI summary ready', 'var(--ai-bg)', 'var(--ai-fg)'], manual: ['Manual entry needed', 'var(--bad-bg)', 'var(--bad-fg)'] };
         var a = aiMap[c.ai];
@@ -267,6 +326,7 @@ class Component extends DCLogic {
           scBg: c.sc >= need ? 'var(--ok-bg)' : 'var(--surface-2)', scFg: c.sc >= need ? 'var(--ok-fg)' : 'var(--text-2)',
           ageText: stale ? 'No update ' + c.days + 'd' : (c.days === 0 ? 'Today' : c.days + 'd in stage'),
           ageFg: stale ? 'var(--warn-fg)' : 'var(--muted)', ageW: stale ? '700' : '500',
+          hasFollow: !!f, followLabel: f ? f.label : '', followHref: f ? f.href : '',
           canAdvance: si < stages.length - 1,
           nextName: stages[si + 1] || '',
           advance: function () {
@@ -280,7 +340,9 @@ class Component extends DCLogic {
         });
       });
       return {
-        name: name, items: items, count: items.length, empty: items.length === 0, locked: !!locked[si],
+        name: name, items: items, count: items.length, empty: inCol.length === 0, locked: !!locked[si],
+        countText: filtered ? items.length + '/' + inCol.length : String(inCol.length),
+        noneMatch: filtered && inCol.length > 0 && items.length === 0,
         note: si === AGREE || si === 12, noteText: si === AGREE ? 'Ends Time to Hire · fills a seat' : 'Final stage'
       };
     });
@@ -308,8 +370,19 @@ class Component extends DCLogic {
     var tones = { ok: ['var(--ok-bg)', 'var(--ok-fg)'], warn: ['var(--warn-bg)', 'var(--warn-fg)'], bad: ['var(--bad-bg)', 'var(--bad-fg)'] };
     var tt = t ? tones[t.tone] : tones.ok;
 
+    var setF = function (k) { return function (e) { var p = {}; p[k] = e.target.value; self.setState(p); }; };
+    var chips = [];
+    if (q) chips.push({ label: '“' + st.fq.trim() + '”', remove: function () { self.setState({ fq: '' }); } });
+    if (st.fStale) chips.push({ label: st.fStale + '+ days in stage', remove: function () { self.setState({ fStale: '' }); } });
+    if (st.fSource) chips.push({ label: 'Source: ' + st.fSource, remove: function () { self.setState({ fSource: '' }); } });
+    var shownCount = columns.reduce(function (n, c) { return n + c.items.length; }, 0);
+
     return Object.assign(this.themeVals(), {
       columns: columns,
+      fq: st.fq, fStale: st.fStale, fSource: st.fSource,
+      setQ: setF('fq'), setStale: setF('fStale'), setSource: setF('fSource'),
+      filtered: filtered, chips: chips, shownCount: shownCount, totalCount: cands.length,
+      clearFilters: function () { self.setState({ fq: '', fStale: '', fSource: '' }); },
       filled: filled,
       outcomeCount: this.state.outcomes,
       hasToast: !!t, toastMsg: t ? t.msg : '', toastBg: tt[0], toastFg: tt[1],
